@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- font awesome cdn link  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- remix icon cdn link  -->
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+	<!-- custom css file link  -->
+	<link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/Assignment1.pdf">
+
+	<title>My Book Store</title>
+{% endblock %}
+
+{% block body %}
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="/" class="logo"> <i class="ri-store-2-line"></i> My Book Store </a>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#popular">Books</a>
+        </nav>
+
+        <div class="icons">
+            <!-- <div id="search-btn" class="ri-search-line"></div> -->
+            <div id="login-btn" class="ri-user-line"></div>
+        </div>
+
+    </header>
+
+    <!-- header section ends  -->
+
+
+    <!-- login-form start -->
+
+    <div class="login-form-container">
+        <form action="/login" method="post" onsubmit="return validateForm()">
+            <h3>login form</h3>
+            <input type="email" placeholder="Email" class="box" name="email">
+            <input type="password" placeholder="Password" class="box" name="password">
+            <input type="submit" value="login now" class="btn">
+        </form>
+    </div>
+    
+    <!-- login-form end -->
+
+
+    <!-- home section starts  -->
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <span>Welcome to our Online Bookstore</span>
+            <h3>Discover the World Through Books.</h3>
+            <p>Explore a vast selection of books in our online bookstore, where you can find your next favorite read from
+				anywhere in the world. With a wide range of genres and languages available, there's something for everyone.</p>
+            <a href="#popular" class="btn">Browse Books</a>
+        </div>
+
+        <div class="image">
+            <img src="../static/image/home.png" alt="" class="home-parallax-img">
+        </div>
+
+    </section>
+
+    <!-- home section ends  -->
+
+
+    <!-- popular section starts  -->
+
+    <section class="popular" id="popular">
+
+        <div class="heading">
+            <span>Our Special Collection</span>
+            <h3>For You!</h3>
+        </div>
+
+        <div class="box-container">
+            {% for book in books %}
+            <div class="box">
+                <!-- <a href="#" class="ri-heart-line wishlist-icon"></a> -->
+                <div class="image">
+                    <img src="{{ url_for('static', filename=book.picture_path.replace('\\', '/')) }}" alt="">
+                </div>
+                <div class="content">
+                    <h3>{{ book.name }}</h3>
+                    <a href="{{ url_for('static', filename=book.pdf_path.replace('\\', '/')) }}" class="btn" download="{{ book.name }}">Download</a>
+                </div>
+            </div>
+            {% endfor %}            
+        </div>
+    </section>
+
+    <!-- popular section ends -->
+
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="newsletter">
+            <h3>Reach Me</h3>
+        </div>
+
+        <div class="box-container">
+
+        <div class="bottom">
+            <div class="share">
+				<a target="_blank" class="fab fa-whatsapp"></a>
+            </div>
+
+            <div class="credit"> created by <span>Faizan</span> | all rights reserved!</div>
+        </div>
+
+    </section>
+
+    <!-- footer section ends -->
+
+
+    <!-- custom js file link  -->
+    <script src="../static/js/script.js"></script>
+    <script>
+        function validateForm() {
+            var email = document.forms[0]["email"].value;
+            var password = document.forms[0]["password"].value;
+            if (email == "" || password == "") {
+                alert("Email and Password fields are required");
+                return false;
+            } else if (email != "Admin@gmail.com" || password != "Admin123") {
+                alert("Invalid email or password. Please try again.");
+                return false;
+            }
+        }
+    </script>
+
+{% endblock %}

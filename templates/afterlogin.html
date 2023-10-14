@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<!-- font awesome cdn link  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+	<!-- remix icon cdn link  -->
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+	<!-- custom css file link  -->
+	<link rel="stylesheet" href="../static/css/style.css">
+
+
+	<title>My Book Store</title>
+{% endblock %}
+
+{% block body %}
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="/" class="logo"> <i class="ri-store-2-line"></i> My Book Store </a>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#popular">Books</a>
+        </nav>
+
+        <div class="icons">
+            <!-- <div id="search-btn" class="ri-search-line"></div> -->
+            <div id="logout-btn" onclick="logoutButton()" class="ri-logout-circle-line"></div>
+        </div>
+
+    </header>
+
+    <!-- header section ends  -->
+
+
+    <!-- home section starts  -->
+
+    <section class="home" id="home">
+
+        <div class="content">
+            <span>Welcome to our Online Bookstore</span>
+            <h3>Discover the World Through Books.</h3>
+            <p>Explore a vast selection of books in our online bookstore, where you can find your next favorite read from
+				anywhere in the world. With a wide range of genres and languages available, there's something for everyone.</p>
+            <a href="#popular" class="btn">Browse Books</a>
+        </div>
+
+        <div class="image">
+            <img src="../static/image/home.png" alt="" class="home-parallax-img">
+        </div>
+
+    </section>
+
+    <!-- home section ends  -->
+
+
+    <!-- popular section starts  -->
+
+    <section class="popular" id="popular">
+
+        <div class="heading">
+            <span>Our Special Collection</span>
+            <h3>For You!</h3>
+        </div>
+
+        <div class="box-container">
+            {% for book in books %}
+            <div class="box">
+                <!-- <a href="#" class="ri-heart-line wishlist-icon"></a> -->
+                <div class="image">
+                    <img src="{{ url_for('static', filename=book.picture_path.replace('\\', '/')) }}" alt="">
+                </div>
+                <div class="content">
+                    <h3>{{ book.name }}</h3>
+                    <a href="{{ url_for('static', filename=book.pdf_path.replace('\\', '/')) }}" class="btn" download="{{ book.name }}">Download</a>
+                </div>
+            </div>
+            {% endfor %}            
+            <div class="box">
+                <!-- <a href="#" class="ri-heart-line wishlist-icon"></a> -->
+                <div class="content">
+					<a id="add-book-btn" >Add a book</a>
+                </div>
+            </div> 
+			
+        </div>
+    
+    
+        <div class="login-form-container" style="display: none;">
+            <form action="/add_book" method="post" id="add-book-form" enctype="multipart/form-data">
+                
+                <input type="text" placeholder="Name" class="box" name="name" required>
+
+                <h3 style="font-size: 15px; text-align: center; margin-top: 10px;">Picture</h3>
+                <input type="file" accept="image/*" name="picture" required>
+
+                <h3 style="font-size: 15px; text-align: center; margin-top: 10px;">PDF</h3>
+                <input type="file" accept="application/pdf" name="pdf" required>
+                
+                <input type="submit" value="Add Book" class="btn">
+                <input type="button" value="Cancel" id="cancel-book-btn" class="btn">
+            </form>
+        </div>
+            
+
+
+    </section>
+
+    <!-- popular section ends -->
+
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="newsletter">
+            <h3>Reach Me</h3>
+        </div>
+
+        <div class="box-container">
+
+        <div class="bottom">
+            <div class="share">
+				<a target="_blank" class="fab fa-whatsapp"></a>
+            </div>
+
+            <div class="credit"> created by <span>Faizan</span> | all rights reserved!</div>
+        </div>
+
+    </section>
+
+    <!-- footer section ends -->
+
+
+    <!-- custom js file link  -->
+    <script src="../static/js/script.js"></script>
+
+    <script>
+        
+        // for logout 
+        function logoutButton() {
+            window.location.href = '/logout';
+        }
+
+        // for showing add book form
+        document.getElementById('add-book-btn').addEventListener('click', function() {
+            document.querySelector('.login-form-container').style.display = 'block';
+        });
+
+        // for hiding add book form
+        document.getElementById('cancel-book-btn').addEventListener('click', function() {
+            document.querySelector('.login-form-container').style.display = 'none';
+        });
+
+    </script>
+
+{% endblock %}
